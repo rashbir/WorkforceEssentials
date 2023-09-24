@@ -11,13 +11,14 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
 public class access_permissions extends AppCompatActivity {
     private static final int PERMISSIONS_REQUEST_CODE = 101;
     private final String[] PERMISSIONS = {
@@ -54,7 +55,6 @@ public class access_permissions extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_access_permissions);
-
         checkAndRequestPermissions();
     }
 
@@ -62,29 +62,25 @@ public class access_permissions extends AppCompatActivity {
         List<String> permissionsNeeded = new ArrayList<>();
 
         for (String permission : PERMISSIONS) {
-            if (ContextCompat.checkSelfPermission(this, permission)
-                    != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
                 permissionsNeeded.add(permission);
             }
         }
 
         if (!permissionsNeeded.isEmpty()) {
-            // Request permissions for the needed permissions
-            ActivityCompat.requestPermissions(
-                    this,
-                    permissionsNeeded.toArray(new String[0]),
-                    PERMISSIONS_REQUEST_CODE
-            );
+            ActivityCompat.requestPermissions(this, permissionsNeeded.toArray(new String[0]), PERMISSIONS_REQUEST_CODE);
         } else {
-            // All permissions are granted, proceed to the welcome_screen activity
-            startActivity(new Intent(this, sign_in.class));
-            finish();
+            proceedToSignIn();
         }
     }
 
+    private void proceedToSignIn() {
+        startActivity(new Intent(this, sign_in.class));
+        finish();
+    }
+
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
             boolean allPermissionsGranted = true;
 
@@ -96,10 +92,8 @@ public class access_permissions extends AppCompatActivity {
             }
 
             if (allPermissionsGranted) {
-                // All permissions are granted, proceed to the welcome_screen activity
-                startActivity(new Intent(this, sign_in.class));
+                proceedToSignIn();
             } else {
-                // At least one permission was denied, inform the user and request permissions again
                 showPermissionExplanationDialog();
             }
         } else {
@@ -110,35 +104,17 @@ public class access_permissions extends AppCompatActivity {
     private void showPermissionExplanationDialog() {
         new AlertDialog.Builder(this)
                 .setTitle("Permission Required")
-                .setCancelable(false)
-                .setMessage("Please provide the necessary permissions in order to use this app.")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Request permissions again
-                        checkAndRequestPermissions();
-                    }
-                })
-                .setNegativeButton("Exit", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Close the app or handle as needed
-                        finish();
-                    }
-                })
-                .setNeutralButton("Neutral", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Close the app or handle as needed
-                        finish();
-                    }
-                })
-
+                .setCancelable(true)
+                .setMessage("Please grant the required permissions to use this app.")
+                .setPositiveButton("Open Application Settings", (dialog, which) -> openAppSettings())
                 .show();
     }
 
-    @Override
-    public void onBackPressed() {
-//        super.onBackPressed();
+    private void openAppSettings() {
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
     }
 }
