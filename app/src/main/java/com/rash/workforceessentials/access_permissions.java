@@ -1,20 +1,19 @@
 package com.rash.workforceessentials;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +21,14 @@ import java.util.List;
 public class access_permissions extends AppCompatActivity {
     private static final int PERMISSIONS_REQUEST_CODE = 101;
     private final String[] PERMISSIONS = {
-            Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+//            Manifest.permission.ACCESS_BACKGROUND_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.CAMERA,
             Manifest.permission.ACCESS_MEDIA_LOCATION,
-            Manifest.permission.MANAGE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//            Manifest.permission.MANAGE_EXTERNAL_STORAGE,
+//            Manifest.permission.READ_EXTERNAL_STORAGE,
+//            Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_MEDIA_AUDIO,
             Manifest.permission.READ_MEDIA_IMAGES,
             Manifest.permission.READ_MEDIA_VIDEO,
@@ -75,7 +74,10 @@ public class access_permissions extends AppCompatActivity {
     }
 
     private void proceedToSignIn() {
-        startActivity(new Intent(this, sign_in.class));
+        Intent intent = new Intent(access_permissions.this, sign_in.class);
+        startActivity(intent);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(access_permissions.this);
+        ActivityCompat.startActivity(access_permissions.this, intent, options.toBundle());
         finish();
     }
 
@@ -86,6 +88,7 @@ public class access_permissions extends AppCompatActivity {
 
             for (int grantResult : grantResults) {
                 if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, permissions[0], Toast.LENGTH_SHORT).show();
                     allPermissionsGranted = false;
                     break;
                 }
@@ -116,5 +119,10 @@ public class access_permissions extends AppCompatActivity {
         Uri uri = Uri.fromParts("package", getPackageName(), null);
         intent.setData(uri);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
     }
 }
