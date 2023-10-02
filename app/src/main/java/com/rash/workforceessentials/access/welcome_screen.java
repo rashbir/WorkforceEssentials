@@ -1,34 +1,41 @@
-package com.rash.workforceessentials;
-
-import android.Manifest;
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.provider.Settings;
-import android.widget.Toast;
+package com.rash.workforceessentials.access;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.animation.ValueAnimator;
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import android.view.View;
+import android.view.animation.LinearInterpolator;
+import android.widget.FrameLayout;
+import android.widget.Toast;
+
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.rash.workforceessentials.R;
+import com.rash.workforceessentials.access_permissions;
 import com.rash.workforceessentials.libraries.NetworkUtils;
+import com.rash.workforceessentials.sign_in;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
-@RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-public class access_permissions extends AppCompatActivity {
+public class welcome_screen extends AppCompatActivity {
+
     private static final int PERMISSIONS_REQUEST_CODE = 101;
     private final String[] PERMISSIONS = {
             Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -54,17 +61,38 @@ public class access_permissions extends AppCompatActivity {
             Manifest.permission.SEND_SMS,
             Manifest.permission.RECEIVE_SMS
     };
-
-    Activity activity = access_permissions.this;
+    Activity activity = welcome_screen.this;
+    FrameLayout frameLayout;
+    MaterialButton login;
+    public Timer exitTimer;
+    public Boolean doubleBackToExitPressedOnce = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_access_permissions);
+        setContentView(R.layout.activity_welcome_screen);
 
-        checkNetworkStatus();
+        initializeViews();
+        
+        // Start the fade out animation after 5 seconds
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                fadeOutFrameLayout();
+            }
+        }, 4500);
 
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkNetworkStatus();
+            }
+        });
+    }
+    private void initializeViews() {
+        frameLayout = findViewById(R.id.framelayout);
+        login = findViewById(R.id.login);
     }
 
     private void checkNetworkStatus() {
@@ -124,11 +152,11 @@ public class access_permissions extends AppCompatActivity {
         }
     }
     private void proceedToSignIn() {
-        Intent intent = new Intent(access_permissions.this, sign_in.class);
-        startActivity(intent);
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(access_permissions.this);
-        ActivityCompat.startActivity(access_permissions.this, intent, options.toBundle());
-        finish();
+//        Intent intent = new Intent(activity, sign_in.class);
+//        startActivity(intent);
+//        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity);
+//        ActivityCompat.startActivity(activity, intent, options.toBundle());
+//        finish();
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -194,7 +222,34 @@ public class access_permissions extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
-        finishAffinity();
+        if(doubleBackToExitPressedOnce){
+            finishAffinity(); // Finish the current activity
+        } else {
+            exitTimer = new Timer();
+            exitTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            },2000);
+
+            doubleBackToExitPressedOnce = true;
+
+            Toast.makeText(activity,"Press back again to exit.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void fadeOutFrameLayout() {
+        ValueAnimator animator = ValueAnimator.ofFloat(1.0f, 0.0f);
+        animator.setDuration(1000);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float alpha = (float) animation.getAnimatedValue();
+                frameLayout.setAlpha(alpha);
+            }
+        });
+        animator.start();
     }
 }
