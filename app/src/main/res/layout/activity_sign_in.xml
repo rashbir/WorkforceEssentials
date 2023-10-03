@@ -4,21 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".sign_in">
+    android:background="@color/background"
+    tools:context=".access.login">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/welcome_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="30dp"
         android:layout_marginBottom="25dp"
-        android:text="Welcome to Workforce Essentials!"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:alpha="0.75"
+        android:shadowColor="@color/black"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="Login Now"
         android:textColor="@color/black"
-
-
+        android:textSize="40sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,13 +29,232 @@
         android:id="@+id/welcome_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="Please login or sign up to continue our app"
-        android:textSize="14sp"
-
-
-
+        android:layout_marginTop="10dp"
+        android:alpha="0.75"
+        android:shadowColor="@color/chinese_silver"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="Please login to continue using our app"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/welcome_title"
         app:layout_constraintTop_toBottomOf="@+id/welcome_title" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/login_direction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:alpha="0.75"
+        android:shadowColor="@color/chinese_silver"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="Login instantly"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/welcome_message"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_message" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/google"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="165dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="25dp"
+        app:cornerRadius="8dp"
+        app:layout_constraintEnd_toStartOf="@id/facebook"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_direction"
+        app:strokeColor="@color/chinese_silver"
+        app:strokeWidth="1dp" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/google"
+        app:layout_constraintBottom_toBottomOf="@id/google"
+        app:layout_constraintEnd_toEndOf="@id/google"
+        app:layout_constraintStart_toStartOf="@+id/google"
+        app:layout_constraintTop_toTopOf="@+id/google" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/facebook"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="165dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="25dp"
+        android:visibility="invisible"
+        app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/google"
+        app:layout_constraintTop_toBottomOf="@+id/login_direction"
+        app:strokeColor="@color/chinese_silver"
+        app:strokeWidth="1dp" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/facebook"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/facebook"
+        app:layout_constraintEnd_toEndOf="@id/facebook"
+        app:layout_constraintStart_toStartOf="@+id/facebook"
+        app:layout_constraintTop_toTopOf="@+id/facebook" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/login_choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:alpha="0.75"
+        android:shadowColor="@color/chinese_silver"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="or login with user id or mobile number"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/google"
+        app:layout_constraintTop_toBottomOf="@+id/google" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/user_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:alpha="0.75"
+        android:shadowColor="@color/chinese_silver"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="User ID"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/google"
+        app:layout_constraintTop_toBottomOf="@+id/login_choice" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedTextField1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:hint="User id or mobile number"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="@id/facebook"
+        app:layout_constraintStart_toStartOf="@id/google"
+        app:layout_constraintTop_toBottomOf="@+id/user_title"
+        app:startIconDrawable="@drawable/outline_person_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/user_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="10" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/password_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:alpha="0.75"
+        android:shadowColor="@color/chinese_silver"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="Password"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/google"
+        app:layout_constraintTop_toBottomOf="@+id/outlinedTextField1" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedTextField2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:hint="Password"
+        app:endIconMode="password_toggle"
+        app:layout_constraintEnd_toEndOf="@id/facebook"
+        app:layout_constraintStart_toStartOf="@id/google"
+        app:layout_constraintTop_toBottomOf="@+id/password_title"
+        app:startIconDrawable="@drawable/outline_lock_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <RadioButton
+        android:id="@+id/radio_button_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Remember me"
+        app:layout_constraintEnd_toEndOf="@+id/facebook"
+        app:layout_constraintStart_toStartOf="@+id/google"
+        app:layout_constraintTop_toBottomOf="@+id/outlinedTextField2" />
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forget password ?"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/facebook"
+        app:layout_constraintTop_toBottomOf="@+id/outlinedTextField2" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/login_button"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:text="Login Now"
+        android:textSize="18sp"
+        app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/facebook"
+        app:layout_constraintStart_toStartOf="@+id/google"
+        app:layout_constraintTop_toBottomOf="@+id/radio_button_1"
+        app:strokeColor="@color/lavender"
+        app:strokeWidth="1dp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/register_title"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="-10dp"
+        android:alpha="0.75"
+        android:gravity="center_vertical"
+        android:shadowColor="@color/chinese_silver"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="Don't have an account ?"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/register"
+        app:layout_constraintStart_toStartOf="@+id/google"
+        app:layout_constraintTop_toTopOf="@+id/register" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/register"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-8dp"
+        android:gravity="start"
+        android:text="Register now"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/register_title"
+        app:layout_constraintTop_toBottomOf="@+id/login_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,196 +4,188 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".access.welcome_screen"
     tools:ignore="HardcodedText">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/welcome_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="25dp"
+                android:alpha="0.75"
+                android:shadowColor="@color/black"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2"
+                android:text="Welcome,"
+                android:textColor="@color/black"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/welcome_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="25dp"
+                android:alpha="0.75"
+                android:shadowColor="@color/black"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2"
+                android:text="Workforce Essentials!"
+                android:textColor="@color/black"
+                android:textSize="36sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/welcome_title"
+                app:layout_constraintTop_toBottomOf="@+id/welcome_title" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/welcome_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="25dp"
-            android:alpha="0.75"
-            android:shadowColor="@color/black"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="2"
-            android:text="Welcome,"
-            android:textColor="@color/black"
-            android:textSize="40sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/welcome_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:alpha="0.75"
+                android:shadowColor="@color/black"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2"
+                android:text="Please login or sign up to continue our app"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@+id/welcome_title"
+                app:layout_constraintTop_toBottomOf="@+id/welcome_subtitle" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/welcome_subtitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="25dp"
-            android:alpha="0.75"
-            android:shadowColor="@color/black"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="2"
-            android:text="Workforce Essentials!"
-            android:textColor="@color/black"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/welcome_title"
-            app:layout_constraintTop_toBottomOf="@+id/welcome_title" />
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_marginTop="-25dp"
+                android:id="@+id/lottie1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/welcome_message"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/office"
+                app:lottie_repeatMode="restart" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/welcome_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:alpha="0.75"
-            android:shadowColor="@color/black"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="2"
-            android:text="Please login or sign up to continue our app"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="@+id/welcome_title"
-            app:layout_constraintTop_toBottomOf="@+id/welcome_subtitle" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/login"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="20dp"
+                android:text="Login Now"
+                android:textSize="18sp"
+                app:cornerRadius="8dp"
+                android:layout_marginTop="-15dp"
+                app:layout_constraintBottom_toTopOf="@+id/or"
+                app:layout_constraintEnd_toEndOf="@+id/facebook"
+                app:layout_constraintStart_toStartOf="@+id/google"
+                app:layout_constraintTop_toBottomOf="@+id/lottie1"
+                app:strokeColor="@color/lavender"
+                app:strokeWidth="1dp" />
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/lottie1"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/welcome_message"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/office"
-            app:lottie_repeatMode="restart" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/google"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="165dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="20dp"
+                app:cornerRadius="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/facebook"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:strokeColor="@color/chinese_silver"
+                app:strokeWidth="1dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/login"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="20dp"
-            android:text="Login Now"
-            android:textSize="18sp"
-            app:cornerRadius="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/or"
-            app:layout_constraintEnd_toEndOf="@+id/facebook"
-            app:layout_constraintStart_toStartOf="@+id/google"
-            app:layout_constraintTop_toBottomOf="@+id/lottie1"
-            app:strokeColor="@color/lavender"
-            app:strokeWidth="1dp" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/google"
+                app:layout_constraintBottom_toBottomOf="@id/google"
+                app:layout_constraintEnd_toEndOf="@id/google"
+                app:layout_constraintStart_toStartOf="@+id/google"
+                app:layout_constraintTop_toTopOf="@+id/google" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/google"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:layout_width="165dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="25dp"
-            app:cornerRadius="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/facebook"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent"
-            app:strokeColor="@color/lavender"
-            app:strokeWidth="1dp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/facebook"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="165dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="20dp"
+                app:cornerRadius="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/google"
+                app:strokeColor="@color/chinese_silver"
+                app:strokeWidth="1dp" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/google"
-            app:layout_constraintBottom_toBottomOf="@id/google"
-            app:layout_constraintEnd_toEndOf="@id/google"
-            app:layout_constraintStart_toStartOf="@+id/google"
-            app:layout_constraintTop_toTopOf="@+id/google" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/facebook"
+                app:layout_constraintBottom_toBottomOf="@id/facebook"
+                app:layout_constraintEnd_toEndOf="@id/facebook"
+                app:layout_constraintStart_toStartOf="@+id/facebook"
+                app:layout_constraintTop_toTopOf="@+id/facebook" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/facebook"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:layout_width="165dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="25dp"
-            app:cornerRadius="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/google"
-            app:strokeColor="@color/lavender"
-            app:strokeWidth="1dp" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="15dp"
+                android:background="@color/chinese_silver"
+                app:layout_constraintBottom_toBottomOf="@+id/or"
+                app:layout_constraintEnd_toStartOf="@+id/or"
+                app:layout_constraintStart_toStartOf="@id/google"
+                app:layout_constraintTop_toTopOf="@id/or" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/facebook"
-            app:layout_constraintBottom_toBottomOf="@id/facebook"
-            app:layout_constraintEnd_toEndOf="@id/facebook"
-            app:layout_constraintStart_toStartOf="@+id/facebook"
-            app:layout_constraintTop_toTopOf="@+id/facebook" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/or"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:text="or"
+                android:textColor="@color/chinese_silver"
+                android:textSize="22sp"
+                app:layout_constraintBottom_toTopOf="@+id/google"
+                app:layout_constraintEnd_toStartOf="@+id/facebook"
+                app:layout_constraintStart_toEndOf="@+id/google" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="15dp"
-            android:background="@color/chinese_silver"
-            app:layout_constraintBottom_toBottomOf="@+id/or"
-            app:layout_constraintEnd_toStartOf="@+id/or"
-            app:layout_constraintStart_toStartOf="@id/google"
-            app:layout_constraintTop_toTopOf="@id/or" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/or"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp"
-            android:text="or"
-            android:textColor="@color/chinese_silver"
-            android:textSize="22sp"
-            app:layout_constraintBottom_toTopOf="@+id/google"
-            app:layout_constraintEnd_toStartOf="@+id/facebook"
-            app:layout_constraintStart_toEndOf="@+id/google" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
-            android:background="@color/chinese_silver"
-            app:layout_constraintBottom_toBottomOf="@+id/or"
-            app:layout_constraintEnd_toEndOf="@id/facebook"
-            app:layout_constraintStart_toEndOf="@id/or"
-            app:layout_constraintTop_toTopOf="@id/or" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:background="@color/chinese_silver"
+                app:layout_constraintBottom_toBottomOf="@+id/or"
+                app:layout_constraintEnd_toEndOf="@id/facebook"
+                app:layout_constraintStart_toEndOf="@id/or"
+                app:layout_constraintTop_toTopOf="@id/or" />
 
     <FrameLayout
         android:id="@+id/framelayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" android:background="@color/white">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <com.airbnb.lottie.LottieAnimationView
-            android:layout_gravity="center"
             android:id="@+id/lottie2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             app:lottie_autoPlay="true"
-
-            app:lottie_rawRes="@raw/hi"
-          />
-
+            app:lottie_rawRes="@raw/hi" />
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

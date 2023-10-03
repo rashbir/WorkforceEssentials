@@ -41,4 +41,6 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     implementation("com.airbnb.android:lottie:6.1.0")
+    implementation("com.amitshekhar.android:android-networking:1.0.2")
+    implementation("com.github.mhadikz:toaster:1.0.0")
 }

@@ -11,6 +11,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,11 +24,9 @@ import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.imageview.ShapeableImageView;
 import com.rash.workforceessentials.R;
-import com.rash.workforceessentials.access_permissions;
 import com.rash.workforceessentials.libraries.NetworkUtils;
-import com.rash.workforceessentials.sign_in;
+import com.rash.workforceessentials.workspace.dashboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,20 +40,13 @@ public class welcome_screen extends AppCompatActivity {
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.CAMERA,
-            Manifest.permission.ACCESS_MEDIA_LOCATION,
-            Manifest.permission.READ_MEDIA_AUDIO,
-            Manifest.permission.READ_MEDIA_IMAGES,
-            Manifest.permission.READ_MEDIA_VIDEO,
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.INTERNET,
             Manifest.permission.ACCESS_NETWORK_STATE,
             Manifest.permission.ACCESS_WIFI_STATE,
-            Manifest.permission.ANSWER_PHONE_CALLS,
             Manifest.permission.CALL_PHONE,
             Manifest.permission.READ_CALL_LOG,
             Manifest.permission.READ_CONTACTS,
-            Manifest.permission.READ_PHONE_NUMBERS,
-            Manifest.permission.USE_BIOMETRIC,
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.VIBRATE,
             Manifest.permission.READ_SMS,
@@ -66,7 +58,9 @@ public class welcome_screen extends AppCompatActivity {
     MaterialButton login;
     public Timer exitTimer;
     public Boolean doubleBackToExitPressedOnce = false;
+    public Boolean checkSigninStatus;
 
+    public Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,11 +146,18 @@ public class welcome_screen extends AppCompatActivity {
         }
     }
     private void proceedToSignIn() {
-//        Intent intent = new Intent(activity, sign_in.class);
-//        startActivity(intent);
-//        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity);
-//        ActivityCompat.startActivity(activity, intent, options.toBundle());
-//        finish();
+        SharedPreferences sharedPreferences = getSharedPreferences("workforce_essentials_access_db", MODE_PRIVATE);
+        checkSigninStatus = sharedPreferences.getBoolean("login", false);
+
+        if(checkSigninStatus) {
+            intent = new Intent(activity, dashboard.class);
+        } else {
+            intent = new Intent(activity, com.rash.workforceessentials.access.login.class);
+        }
+        startActivity(intent);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity);
+        ActivityCompat.startActivity(activity, intent, options.toBundle());
+        finish();
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -184,27 +185,26 @@ public class welcome_screen extends AppCompatActivity {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(activity);
         builder.setIcon(R.drawable.info);
         builder.setTitle("Permission Required");
-        builder.setMessage("Please grant the required permissions to use this app.");
+        builder.setMessage("To fully utilize the features and functionalities of this app, we kindly request that you grant the necessary permissions. Your approval will enhance your overall experience and allow us to provide you with a seamless and customized service. Your privacy and data security are of utmost importance to us. Thank you for your cooperation in ensuring a smooth and tailored experience.");
         builder.setPositiveButton("Open Application Settings", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 openAppSettings();
             }
         });
-        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                finishAffinity();
-            }
-        });
-        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                finishAffinity();
-            }
-        });
-
-        builder.setCancelable(false);
+//        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+//            @Override
+//            public void onCancel(DialogInterface dialog) {
+//                finishAffinity();
+//            }
+//        });
+//        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//            @Override
+//            public void onDismiss(DialogInterface dialog) {
+//                finishAffinity();
+//            }
+//        });
+//        builder.setCancelable(false);
         builder.create().show();
     }
     private void openAppSettings() {

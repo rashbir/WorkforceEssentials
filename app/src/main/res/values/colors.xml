@@ -3,5 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="lavender">#E6E6FA</color>
-    <color name="chinese_silver">#CCCCCC</color>
+    <color name="chinese_silver">#D4D3D9</color>
+    <color name="background">#F3EDF3</color>
 </resources>
