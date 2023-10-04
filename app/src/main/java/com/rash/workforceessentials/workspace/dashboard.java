@@ -1,45 +1,71 @@
 package com.rash.workforceessentials.workspace;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
-import com.rash.workforceessentials.R;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.fragment.app.FragmentManager;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
+import com.rash.workforceessentials.R;
+import com.rash.workforceessentials.fragments.attendance_marking;
+import com.rash.workforceessentials.libraries.BottomAppBarCutCornersTopEdge;
 
 public class dashboard extends AppCompatActivity {
-
-    public Timer exitTimer;
-    public Boolean doubleBackToExitPressedOnce = false;
-
+    private BottomAppBar bottomAppBar;
     Activity activity = dashboard.this;
+    FloatingActionButton attendance_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        initializeViews();
+        preLoadings();
+        buttonListeners();
+
+        attendance_marking attendanceMarking = new attendance_marking();
+
+//        // Set the height of the bottom sheet dialog fragment
+//        BottomSheetBehavior behavior = BottomSheetBehavior.from((View) attendanceMarking.getView());
+//        behavior.setPeekHeight(100);
+
+        attendanceMarking.show(getSupportFragmentManager(),"Attendance Marking");
+        attendance_button.setEnabled(false);
     }
 
-    @Override
-    public void onBackPressed() {
-        if(doubleBackToExitPressedOnce){
-            finishAffinity(); // Finish the current activity
-        } else {
-            exitTimer = new Timer();
-            exitTimer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    doubleBackToExitPressedOnce = false;
-                }
-            },2000);
+    private void preLoadings() {
+        BottomAppBarCutCornersTopEdge bottomAppBarCutCornersTopEdge = new BottomAppBarCutCornersTopEdge(bottomAppBar.getFabCradleMargin(), bottomAppBar.getFabCradleRoundedCornerRadius(), bottomAppBar.getCradleVerticalOffset());
 
-            doubleBackToExitPressedOnce = true;
-
-            Toast.makeText(activity,"Press back again to exit.", Toast.LENGTH_SHORT).show();
-        }
+        MaterialShapeDrawable background = (MaterialShapeDrawable) bottomAppBar.getBackground();
+        background.setShapeAppearanceModel(background.getShapeAppearanceModel().toBuilder().setTopEdge(bottomAppBarCutCornersTopEdge).build());
     }
+
+    private void initializeViews() {
+        bottomAppBar = findViewById(R.id.bottomAppBar);
+        attendance_button = findViewById(R.id.attendance_button);
+    }
+
+    private void buttonListeners() {
+        attendance_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attendance_marking attendanceMarking = new attendance_marking();//
+                attendanceMarking.show(getSupportFragmentManager(),"Attendance Marking");
+                attendance_button.setEnabled(false);
+            }
+        });
+    }
+
+
 }

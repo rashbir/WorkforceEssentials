@@ -1,8 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Button 1" android:icon="@drawable/info"/>
-    <item android:title="Button 2" android:icon="@drawable/info"/>
-    <item android:title="Button 3" android:icon="@drawable/info"/>
-    <item android:title="Button 4" android:icon="@drawable/info"/>
-    <item android:title="Button 5" android:icon="@drawable/info"/>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText">
+
+    <item
+        android:id="@+id/item1"
+        android:contentDescription="content_description_rotation"
+        android:icon="@drawable/outline_home_24"
+        android:title="Dashboard"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/item2"
+        android:contentDescription="content_description_rotation"
+        android:icon="@drawable/holiday_journey"
+        android:title="Holidays"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/item3"
+        android:contentDescription="content_description_rotation"
+        android:enabled="false"
+        android:title="" />
+
+    <item
+        android:id="@+id/item4"
+        android:contentDescription="content_description_rotation"
+        android:icon="@drawable/notice"
+        android:title="Notice"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/item5"
+        android:contentDescription="content_description_rotation"
+        android:icon="@drawable/outline_contact_page_24"
+        android:title="Contacts"
+        app:showAsAction="ifRoom" />
+
 </menu>
