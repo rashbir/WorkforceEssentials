@@ -26,6 +26,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.rash.workforceessentials.R;
 import com.rash.workforceessentials.libraries.NetworkUtils;
+import com.rash.workforceessentials.libraries.access_permissions;
 import com.rash.workforceessentials.workspace.dashboard;
 
 import java.util.ArrayList;
@@ -35,30 +36,15 @@ import java.util.TimerTask;
 
 public class welcome_screen extends AppCompatActivity {
 
-    private static final int PERMISSIONS_REQUEST_CODE = 101;
-    private final String[] PERMISSIONS = {
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.CAMERA,
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.INTERNET,
-            Manifest.permission.ACCESS_NETWORK_STATE,
-            Manifest.permission.ACCESS_WIFI_STATE,
-            Manifest.permission.CALL_PHONE,
-            Manifest.permission.READ_CALL_LOG,
-            Manifest.permission.READ_CONTACTS,
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.VIBRATE,
-            Manifest.permission.READ_SMS,
-            Manifest.permission.SEND_SMS,
-            Manifest.permission.RECEIVE_SMS
-    };
+
     Activity activity = welcome_screen.this;
     FrameLayout frameLayout;
     MaterialButton login;
     public Timer exitTimer;
     public Boolean doubleBackToExitPressedOnce = false;
     public Boolean checkSigninStatus;
+
+    access_permissions accessPermissions;
 
     public Intent intent;
 
@@ -77,19 +63,28 @@ public class welcome_screen extends AppCompatActivity {
             }
         }, 4500);
 
-        login.setOnClickListener(new View.OnClickListener() {
+      /*  login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkNetworkStatus();
             }
-        });
+        });*/
+
+        accessPermissions = new access_permissions();
+        accessPermissions.checkNetworkStatus(activity);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        accessPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, activity);
     }
     private void initializeViews() {
         frameLayout = findViewById(R.id.framelayout);
         login = findViewById(R.id.login);
     }
 
-    private void checkNetworkStatus() {
+ /*   private void checkNetworkStatus() {
         registerNetworkListener();
         if (NetworkUtils.isNetworkAvailable(this)) {
             checkAndRequestPermissions();
@@ -112,7 +107,7 @@ public class welcome_screen extends AppCompatActivity {
     }
     private void showNetworkUnavailableDialog() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-//        builder.setIcon(R.drawable.info);
+        builder.setIcon(R.drawable.info);
         builder.setTitle("No Internet Connection");
         builder.setMessage("Please check the status of your internet connection and attempt the action once more. Ensure you have a stable and active internet connection before proceeding. If the issue persists, please contact our customer support team for further assistance.");
         builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
@@ -144,22 +139,23 @@ public class welcome_screen extends AppCompatActivity {
         } else {
             proceedToSignIn();
         }
-    }
+    }*/
     private void proceedToSignIn() {
-        SharedPreferences sharedPreferences = getSharedPreferences("workforce_essentials_access_db", MODE_PRIVATE);
-        checkSigninStatus = sharedPreferences.getBoolean("login", false);
-
-        if(checkSigninStatus) {
-            intent = new Intent(activity, dashboard.class);
-        } else {
-            intent = new Intent(activity, com.rash.workforceessentials.access.login.class);
-        }
-        startActivity(intent);
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity);
-        ActivityCompat.startActivity(activity, intent, options.toBundle());
-        finish();
+        Toast.makeText(activity, "Getting Started Successfully", Toast.LENGTH_SHORT).show();
+//        SharedPreferences sharedPreferences = getSharedPreferences("workforce_essentials_access_db", MODE_PRIVATE);
+//        checkSigninStatus = sharedPreferences.getBoolean("login", false);
+//
+//        if(checkSigninStatus) {
+//            intent = new Intent(activity, dashboard.class);
+//        } else {
+//            intent = new Intent(activity, com.rash.workforceessentials.access.login.class);
+//        }
+//        startActivity(intent);
+//        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity);
+//        ActivityCompat.startActivity(activity, intent, options.toBundle());
+//        finish();
     }
-    @Override
+  /*  @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
             boolean allPermissionsGranted = true;
@@ -219,7 +215,7 @@ public class welcome_screen extends AppCompatActivity {
         startActivity(intent);
 
         finishAffinity();
-    }
+    }*/
     @Override
     public void onBackPressed() {
         if(doubleBackToExitPressedOnce){

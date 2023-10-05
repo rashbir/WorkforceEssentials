@@ -79,9 +79,10 @@
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginBottom="20dp"
-                android:text="Login Now"
+                android:text="Getting Started"
                 android:textSize="18sp"
                 app:cornerRadius="8dp"
+                android:textColor="@color/white"
                 android:layout_marginTop="-15dp"
                 app:layout_constraintBottom_toTopOf="@+id/or"
                 app:layout_constraintEnd_toEndOf="@+id/facebook"
@@ -174,7 +175,7 @@
                 app:layout_constraintStart_toEndOf="@id/or"
                 app:layout_constraintTop_toTopOf="@id/or" />
 
-    <FrameLayout
+    <FrameLayout android:visibility="invisible"
         android:id="@+id/framelayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

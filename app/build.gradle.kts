@@ -41,6 +41,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
 
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
@@ -51,4 +52,5 @@ dependencies {
     implementation("com.airbnb.android:lottie:6.1.0")
     implementation("com.amitshekhar.android:android-networking:1.0.2")
     implementation("com.github.mhadikz:toaster:1.0.0")
+//    implementation("com.github.ibrahimsn98:SmoothBottomBar:1.7.9")
 }
