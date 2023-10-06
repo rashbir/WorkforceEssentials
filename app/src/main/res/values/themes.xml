@@ -6,6 +6,15 @@
         <item name="colorSecondary">@color/shrine_pink_900</item>
         <item name="colorOnSecondary">@color/shrine_pink_900</item>
 
+        <item name="android:windowExitAnimation">@anim/slide_out_to_right</item>
+        <item name="android:windowEnterAnimation">@anim/slide_in_from_left</item>
+<!--        <item name="android:windowEnterTransition">@transition/fade_in</item>-->
+<!--        <item name="android:windowExitTransition">@transition/fade_out</item>-->
+
+        <item name="colorPrimaryInverse">@color/shrine_pink_100</item>
+        <item name="colorOnSurfaceInverse">@color/shrine_pink_100</item>
+        <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
+        <item name="snackbarButtonStyle">@style/Widget.App.SnackbarButton</item>
 
         <!-- Customize your light theme here. -->
         <item name="android:statusBarColor">@color/background</item>
@@ -15,6 +24,20 @@
 <!--        <item name="bottomAppBarStyle">@style/Widget.App.BottomAppBar</item>-->
         <item name="textAppearanceTitleMedium">@style/TextAppearance.App.Medium</item>
         <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
+    </style>
+
+
+    <style name="Widget.App.Snackbar" parent="Widget.Material3.Snackbar">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Snackbar</item>
+    </style>
+
+    <style name="Widget.App.SnackbarButton" parent="Widget.Material3.Button.TextButton.Snackbar">
+        <item name="android:textColor">@color/shrine_pink_100</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Snackbar" parent="">
+        <item name="colorPrimaryInverse">@color/shrine_pink_100</item>
+        <item name="colorOnSurfaceInverse">@color/shrine_pink_100</item>
     </style>
 
     <style name="Widget.App.BottomAppBar" parent="Widget.Material3.BottomAppBar">

@@ -36,16 +36,12 @@ import java.util.TimerTask;
 
 public class welcome_screen extends AppCompatActivity {
 
-
     Activity activity = welcome_screen.this;
     FrameLayout frameLayout;
     MaterialButton login;
     public Timer exitTimer;
-    public Boolean doubleBackToExitPressedOnce = false;
-    public Boolean checkSigninStatus;
-
+    public Boolean doubleBackToExitPressedOnce = false, checkSigninStatus;
     access_permissions accessPermissions;
-
     public Intent intent;
 
     @Override
@@ -54,7 +50,7 @@ public class welcome_screen extends AppCompatActivity {
         setContentView(R.layout.activity_welcome_screen);
 
         initializeViews();
-        
+
         // Start the fade out animation after 5 seconds
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -63,15 +59,35 @@ public class welcome_screen extends AppCompatActivity {
             }
         }, 4500);
 
-      /*  login.setOnClickListener(new View.OnClickListener() {
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkNetworkStatus();
+                accessPermissions = new access_permissions();
+                String networkStatus = accessPermissions.checkNetworkStatus(activity);
+                if (networkStatus.equals("true")) {
+                    proceedToSignIn();
+                }
             }
-        });*/
+        });
+    }
 
-        accessPermissions = new access_permissions();
-        accessPermissions.checkNetworkStatus(activity);
+    private void initializeViews() {
+        frameLayout = findViewById(R.id.framelayout);
+        login = findViewById(R.id.login);
+    }
+
+    private void proceedToSignIn() {
+        SharedPreferences sharedPreferences = getSharedPreferences("workforce_essentials_access_db", MODE_PRIVATE);
+        checkSigninStatus = sharedPreferences.getBoolean("login", false);
+
+        intent = new Intent();
+        if (checkSigninStatus) {
+            intent.setClass(activity, dashboard.class);
+        } else {
+            intent.setClass(activity, com.rash.workforceessentials.access.login.class);
+        }
+        startActivity(intent);
+//        finish();
     }
 
     @Override
@@ -79,146 +95,10 @@ public class welcome_screen extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         accessPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, activity);
     }
-    private void initializeViews() {
-        frameLayout = findViewById(R.id.framelayout);
-        login = findViewById(R.id.login);
-    }
 
- /*   private void checkNetworkStatus() {
-        registerNetworkListener();
-        if (NetworkUtils.isNetworkAvailable(this)) {
-            checkAndRequestPermissions();
-        } else {
-            showNetworkUnavailableDialog();
-        }
-    }
-    private void registerNetworkListener() {
-        NetworkUtils.registerConnectivityChangeListener(this, new NetworkUtils.ConnectivityChangeListener() {
-            @Override
-            public void onNetworkAvailable() {
-                checkAndRequestPermissions();
-            }
-
-            @Override
-            public void onNetworkUnavailable() {
-                runOnUiThread(() -> showNetworkUnavailableDialog());
-            }
-        });
-    }
-    private void showNetworkUnavailableDialog() {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setIcon(R.drawable.info);
-        builder.setTitle("No Internet Connection");
-        builder.setMessage("Please check the status of your internet connection and attempt the action once more. Ensure you have a stable and active internet connection before proceeding. If the issue persists, please contact our customer support team for further assistance.");
-        builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                checkNetworkStatus();
-            }
-        });
-        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                finishAffinity();
-            }
-        });
-        builder.setCancelable(false);
-        builder.create().show();
-    }
-    private void checkAndRequestPermissions() {
-        List<String> permissionsNeeded = new ArrayList<>();
-
-        for (String permission : PERMISSIONS) {
-            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-                permissionsNeeded.add(permission);
-            }
-        }
-
-        if (!permissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(this, permissionsNeeded.toArray(new String[0]), PERMISSIONS_REQUEST_CODE);
-        } else {
-            proceedToSignIn();
-        }
-    }*/
-    private void proceedToSignIn() {
-        Toast.makeText(activity, "Getting Started Successfully", Toast.LENGTH_SHORT).show();
-//        SharedPreferences sharedPreferences = getSharedPreferences("workforce_essentials_access_db", MODE_PRIVATE);
-//        checkSigninStatus = sharedPreferences.getBoolean("login", false);
-//
-//        if(checkSigninStatus) {
-//            intent = new Intent(activity, dashboard.class);
-//        } else {
-//            intent = new Intent(activity, com.rash.workforceessentials.access.login.class);
-//        }
-//        startActivity(intent);
-//        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity);
-//        ActivityCompat.startActivity(activity, intent, options.toBundle());
-//        finish();
-    }
-  /*  @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PERMISSIONS_REQUEST_CODE) {
-            boolean allPermissionsGranted = true;
-
-            for (int grantResult : grantResults) {
-                if (grantResult != PackageManager.PERMISSION_GRANTED) {
-//                    Toast.makeText(this, permissions[0], Toast.LENGTH_SHORT).show();
-                    allPermissionsGranted = false;
-                    break;
-                }
-            }
-
-            if (allPermissionsGranted) {
-                proceedToSignIn();
-            } else {
-                showPermissionExplanationDialog();
-            }
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-    }
-    private void showPermissionExplanationDialog() {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(activity);
-        builder.setIcon(R.drawable.info);
-        builder.setTitle("Permission Required");
-        builder.setMessage("To fully utilize the features and functionalities of this app, we kindly request that you grant the necessary permissions. Your approval will enhance your overall experience and allow us to provide you with a seamless and customized service. Your privacy and data security are of utmost importance to us. Thank you for your cooperation in ensuring a smooth and tailored experience.");
-        builder.setPositiveButton("Open Application Settings", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                openAppSettings();
-            }
-        });
-//        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//            @Override
-//            public void onCancel(DialogInterface dialog) {
-//                finishAffinity();
-//            }
-//        });
-//        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//            @Override
-//            public void onDismiss(DialogInterface dialog) {
-//                finishAffinity();
-//            }
-//        });
-//        builder.setCancelable(false);
-        builder.create().show();
-    }
-    private void openAppSettings() {
-        Intent intent = new Intent();
-        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", getPackageName(), null);
-        intent.setData(uri);
-
-        finish();
-
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-
-        finishAffinity();
-    }*/
     @Override
     public void onBackPressed() {
-        if(doubleBackToExitPressedOnce){
+        if (doubleBackToExitPressedOnce) {
             finishAffinity(); // Finish the current activity
         } else {
             exitTimer = new Timer();
@@ -227,11 +107,11 @@ public class welcome_screen extends AppCompatActivity {
                 public void run() {
                     doubleBackToExitPressedOnce = false;
                 }
-            },2000);
+            }, 2000);
 
             doubleBackToExitPressedOnce = true;
 
-            Toast.makeText(activity,"Press back again to exit.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Press back again to exit.", Toast.LENGTH_SHORT).show();
         }
     }
 

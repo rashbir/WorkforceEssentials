@@ -7,8 +7,12 @@
     <color name="lavender">#E6E6FA</color>
     <color name="chinese_silver">#D4D3D9</color>
     <color name="background">#F3EDF3</color>
+    <color name="danger">#ff0e0e</color>
+
 
     <color name="shrine_pink_50">#FCE4EC</color>
     <color name="shrine_pink_100">#F8BBD0</color>
     <color name="shrine_pink_900">#880E4F</color>
+<!--    <color name="backgroundTint">@color/shrine_pink_900</color>-->
+<!--    <color name="actionTextColor">@color/shrine_pink_100</color>-->
 </resources>

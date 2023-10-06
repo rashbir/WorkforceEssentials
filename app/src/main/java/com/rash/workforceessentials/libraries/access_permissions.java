@@ -2,15 +2,14 @@ package com.rash.workforceessentials.libraries;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.Settings;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -22,9 +21,10 @@ import java.util.List;
 
 public class access_permissions {
     private static final int PERMISSIONS_REQUEST_CODE = 101;
-    Activity mainActivity;
+    private AlertDialog networkUnavailableDialog; // Store the reference to the dialog
+    String returnStatement = "false";
+    String permissionsStatus = "false";
 
-    MaterialAlertDialogBuilder NetworkUnavailableDialogBuilder;
     private final String[] PERMISSIONS = {
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -41,32 +41,28 @@ public class access_permissions {
             Manifest.permission.RECEIVE_SMS
     };
 
-    public void checkNetworkStatus(Activity activity) {
-//        mainActivity = activity;
+    public String checkNetworkStatus(Activity activity) {
         registerNetworkListener(activity);
         if (NetworkUtils.isNetworkAvailable(activity)) {
-            checkAndRequestPermissions(activity);
+            String permissionsStatus = checkAndRequestPermissions(activity);
+            if (permissionsStatus.equals("true")) {
+                return "true";
+            }
         } else {
             showNetworkUnavailableDialog(activity);
         }
+        return permissionsStatus;
     }
 
     public void registerNetworkListener(Activity activity) {
         NetworkUtils.registerConnectivityChangeListener(activity, new NetworkUtils.ConnectivityChangeListener() {
             @Override
             public void onNetworkAvailable() {
-                Toast.makeText(activity, "Check 1234", Toast.LENGTH_SHORT).show();
-//                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(activity);
-
-//                Dialog dialog = NetworkUnavailableDialogBuilder;
-
-//                if (dialog.isShowing()) {
-//                    dialog.dismiss();
-//                }
-
+                if (networkUnavailableDialog != null && networkUnavailableDialog.isShowing()) {
+                    networkUnavailableDialog.dismiss();
+                }
                 checkAndRequestPermissions(activity);
             }
-
             @Override
             public void onNetworkUnavailable() {
                 activity.runOnUiThread(() -> showNetworkUnavailableDialog(activity));
@@ -74,7 +70,7 @@ public class access_permissions {
         });
     }
 
-    private void checkAndRequestPermissions(Activity activity) {
+    private String checkAndRequestPermissions(Activity activity) {
         List<String> permissionsNeeded = new ArrayList<>();
 
         for (String permission : PERMISSIONS) {
@@ -86,29 +82,33 @@ public class access_permissions {
         if (!permissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(activity, permissionsNeeded.toArray(new String[0]), PERMISSIONS_REQUEST_CODE);
         } else {
-//            proceedToSignIn();
+            returnStatement = "true";
         }
+        return returnStatement;
     }
 
     private void showNetworkUnavailableDialog(Activity activity) {
-        NetworkUnavailableDialogBuilder = new MaterialAlertDialogBuilder(activity);
-        NetworkUnavailableDialogBuilder.setIcon(R.drawable.info);
-        NetworkUnavailableDialogBuilder.setTitle("No Internet Connection");
-        NetworkUnavailableDialogBuilder.setMessage("Please check the status of your internet connection and attempt the action once more. Ensure you have a stable and active internet connection before proceeding. If the issue persists, please contact our customer support team for further assistance.");
-        NetworkUnavailableDialogBuilder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                checkNetworkStatus(activity);
-            }
-        });
-        NetworkUnavailableDialogBuilder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                activity.finishAffinity();
-            }
-        });
-        NetworkUnavailableDialogBuilder.setCancelable(false);
-        NetworkUnavailableDialogBuilder.create().show();
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(activity);
+        dialogBuilder
+                .setIcon(R.drawable.info)
+                .setTitle("No Internet Connection")
+                .setMessage("Please check the status of your internet connection and attempt the action once more. Ensure you have a stable and active internet connection before proceeding. If the issue persists, please contact our customer support team for further assistance.")
+                .setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        checkNetworkStatus(activity);
+                    }
+                })
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        activity.finishAffinity();
+                    }
+                })
+                .setCancelable(false);
+
+        networkUnavailableDialog = dialogBuilder.create();
+        networkUnavailableDialog.show();
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults, Activity activity) {
@@ -144,19 +144,19 @@ public class access_permissions {
                 openAppSettings(activity);
             }
         });
-//        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//            @Override
-//            public void onCancel(DialogInterface dialog) {
-//                finishAffinity();
-//            }
-//        });
-//        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//            @Override
-//            public void onDismiss(DialogInterface dialog) {
-//                finishAffinity();
-//            }
-//        });
-//        builder.setCancelable(false);
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                activity.finishAffinity();
+            }
+        });
+        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                activity.finishAffinity();
+            }
+        });
+        builder.setCancelable(false);
         builder.create().show();
     }
 
