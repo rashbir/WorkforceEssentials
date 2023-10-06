@@ -21,7 +21,7 @@ import java.util.List;
 
 public class access_permissions {
     private static final int PERMISSIONS_REQUEST_CODE = 101;
-    private AlertDialog networkUnavailableDialog; // Store the reference to the dialog
+    private AlertDialog networkUnavailableDialog;
     String returnStatement = "false";
     String permissionsStatus = "false";
 
@@ -117,15 +117,12 @@ public class access_permissions {
 
             for (int grantResult : grantResults) {
                 if (grantResult != PackageManager.PERMISSION_GRANTED) {
-//                    Toast.makeText(this, permissions[0], Toast.LENGTH_SHORT).show();
                     allPermissionsGranted = false;
                     break;
                 }
             }
 
-            if (allPermissionsGranted) {
-//                proceedToSignIn();
-            } else {
+            if (!allPermissionsGranted) {
                 showPermissionExplanationDialog(activity);
             }
         } else {
