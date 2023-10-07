@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "447899186158",
+    "project_id": "workforce-essentials",
+    "storage_bucket": "workforce-essentials.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:447899186158:android:6800f00b1b9846fb1614ff",
+        "android_client_info": {
+          "package_name": "com.rash.workforceessentials"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDod7TKt-Ib_HegkVYapO9rebT28qS1DlQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
