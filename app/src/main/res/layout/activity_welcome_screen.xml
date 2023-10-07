@@ -176,6 +176,7 @@
                 app:layout_constraintTop_toTopOf="@id/or" />
 
     <FrameLayout
+        android:visibility="invisible"
         android:id="@+id/framelayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

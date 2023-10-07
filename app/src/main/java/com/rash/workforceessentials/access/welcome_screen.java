@@ -1,36 +1,22 @@
 package com.rash.workforceessentials.access;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.content.ContextCompat;
-
-import android.Manifest;
 import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.rash.workforceessentials.R;
-import com.rash.workforceessentials.libraries.NetworkUtils;
-import com.rash.workforceessentials.libraries.access_permissions;
-import com.rash.workforceessentials.workspace.dashboard;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.android.material.button.MaterialButton;
+import com.rash.workforceessentials.R;
+import com.rash.workforceessentials.libraries.access_permissions;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -44,31 +30,16 @@ public class welcome_screen extends AppCompatActivity {
     access_permissions accessPermissions;
     public Intent intent;
 
+    private LocationChecker locationChecker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_screen);
 
         initializeViews();
-
-        // Start the fade out animation after 5 seconds
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                fadeOutFrameLayout();
-            }
-        }, 4500);
-
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                accessPermissions = new access_permissions();
-                String networkStatus = accessPermissions.checkNetworkStatus(activity);
-                if (networkStatus.equals("true")) {
-                    proceedToSignIn();
-                }
-            }
-        });
+        preLoadings();
+        initializeListener();
     }
 
     private void initializeViews() {
@@ -76,17 +47,70 @@ public class welcome_screen extends AppCompatActivity {
         login = findViewById(R.id.login);
     }
 
-    private void proceedToSignIn() {
-        SharedPreferences sharedPreferences = getSharedPreferences("workforce_essentials_access_db", MODE_PRIVATE);
-        checkSigninStatus = sharedPreferences.getBoolean("login", false);
+    private void preLoadings() {
+        // Start the fade out animation after 5 seconds
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                fadeOutFrameLayout();
+            }
+        }, 4500);
+    }
 
-        intent = new Intent();
-        if (checkSigninStatus) {
-            intent.setClass(activity, dashboard.class);
-        } else {
-            intent.setClass(activity, com.rash.workforceessentials.access.login.class);
+    private void initializeListener() {
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                accessPermissions = new access_permissions();
+                String networkStatus = accessPermissions.checkNetworkStatus(activity);
+
+                locationChecker = new LocationChecker(activity);
+
+                // Check if location services are enabled, and prompt the user if not.
+//                 locationChecker.checkLocationEnabled();
+
+                // Register the location receiver to continuously monitor location provider status.
+                locationChecker.registerLocationReceiver();
+
+
+                // Check and request location settings.
+                locationChecker.checkLocationSettings();
+
+                if (networkStatus.equals("true")) {
+
+
+                    proceedToSignIn();
+                }
+            }
+        });
+    }
+
+    // Handle the result of the location settings resolution in onActivityResult.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                // Location settings have been updated successfully.
+            } else {
+                // The user canceled or didn't update location settings.
+                Toast.makeText(this, "Location services not enabled.", Toast.LENGTH_SHORT).show();
+            }
         }
-        startActivity(intent);
+    }
+
+    private void proceedToSignIn() {
+        Toast.makeText(activity, "SUCCESSFUL LOGIN!", Toast.LENGTH_SHORT).show();
+//        SharedPreferences sharedPreferences = getSharedPreferences("workforce_essentials_access_db", MODE_PRIVATE);
+//        checkSigninStatus = sharedPreferences.getBoolean("login", false);
+//
+//        intent = new Intent();
+//        if (checkSigninStatus) {
+//            intent.setClass(activity, dashboard.class);
+//        } else {
+//            intent.setClass(activity, com.rash.workforceessentials.access.login.class);
+//        }
+//        startActivity(intent);
 //        finish();
     }
 
@@ -96,8 +120,24 @@ public class welcome_screen extends AppCompatActivity {
         accessPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, activity);
     }
 
+    private void fadeOutFrameLayout() {
+        ValueAnimator animator = ValueAnimator.ofFloat(1.0f, 0.0f);
+        animator.setDuration(1000);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float alpha = (float) animation.getAnimatedValue();
+                frameLayout.setAlpha(alpha);
+            }
+        });
+        animator.start();
+    }
+
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
+
         if (doubleBackToExitPressedOnce) {
             finishAffinity(); // Finish the current activity
         } else {
@@ -115,17 +155,19 @@ public class welcome_screen extends AppCompatActivity {
         }
     }
 
-    private void fadeOutFrameLayout() {
-        ValueAnimator animator = ValueAnimator.ofFloat(1.0f, 0.0f);
-        animator.setDuration(1000);
-        animator.setInterpolator(new LinearInterpolator());
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float alpha = (float) animation.getAnimatedValue();
-                frameLayout.setAlpha(alpha);
-            }
-        });
-        animator.start();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // Unregister the location receiver when the activity is destroyed.
+        locationChecker.unregisterLocationReceiver();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // Unregister the location receiver when the activity is destroyed.
+        locationChecker.unregisterLocationReceiver();
     }
 }
