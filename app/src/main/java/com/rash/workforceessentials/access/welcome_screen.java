@@ -3,7 +3,6 @@ package com.rash.workforceessentials.access;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -15,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.rash.workforceessentials.R;
 import com.rash.workforceessentials.libraries.LocationChecker;
 import com.rash.workforceessentials.libraries.access_permissions;
@@ -23,16 +24,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class welcome_screen extends AppCompatActivity {
-
     Activity activity = welcome_screen.this;
+    LocationChecker locationChecker;
+    Boolean doubleBackToExitPressedOnce = false;
     FrameLayout frameLayout;
     MaterialButton login;
-    public Timer exitTimer;
-    public Boolean doubleBackToExitPressedOnce = false, checkSigninStatus;
+    Boolean checkSigninStatus;
     access_permissions accessPermissions;
     public Intent intent;
-
-    private LocationChecker locationChecker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +41,11 @@ public class welcome_screen extends AppCompatActivity {
         initializeViews();
         initializePreLoadings();
         initializeListener();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("user_master");
+
+        myRef.setValue("Hello, World!");
     }
 
     private void initializeViews() {
@@ -50,6 +54,8 @@ public class welcome_screen extends AppCompatActivity {
     }
 
     private void initializePreLoadings() {
+        locationChecker = new LocationChecker(activity);
+
         // Start the fade out animation after 5 seconds
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -67,7 +73,7 @@ public class welcome_screen extends AppCompatActivity {
                 String networkStatus = accessPermissions.checkNetworkStatus(activity);
 
                 if (networkStatus.equals("true")) {
-                    locationChecker = new LocationChecker(activity);
+
                     locationChecker.checkLocationSettingsAndRegisterReceiver();
 
                     proceedToSignIn();
@@ -111,20 +117,13 @@ public class welcome_screen extends AppCompatActivity {
         accessPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, activity);
     }
 
-    // Handle the result of the location settings resolution in onActivityResult.
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == 1) {
-//            if (resultCode == RESULT_OK) {
-//                // Location settings have been updated successfully.
-//            } else {
-//                // The user canceled or didn't update location settings.
-//                Toast.makeText(this, "Location services not enabled.", Toast.LENGTH_SHORT).show();
-//                locationChecker.checkLocationSettingsAndRegisterReceiver();
-//            }
-//        }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode != RESULT_OK) {
+            locationChecker.checkLocationSettingsAndRegisterReceiver();
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -143,23 +142,26 @@ public class welcome_screen extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
-
-        if (locationChecker != null) {
+        if (locationChecker == null) {
             locationChecker.registerLocationReceiver();
         }
-
-
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        if (locationChecker != null) {
+            locationChecker.unregisterLocationReceiver();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (locationChecker != null) {
+            locationChecker.unregisterLocationReceiver();
+        }
     }
 }
