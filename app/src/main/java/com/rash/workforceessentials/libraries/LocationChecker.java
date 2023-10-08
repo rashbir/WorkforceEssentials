@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.location.LocationManager;
-import android.provider.Settings;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.ApiException;
