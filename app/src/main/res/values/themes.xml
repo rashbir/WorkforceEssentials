@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.WorkforceEssentials" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/shrine_pink_900</item>
@@ -67,6 +67,10 @@
     <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
         <item name="cornerFamily">cut</item>
         <item name="cornerSize">4dp</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here -->
     </style>
 
     <style name="Theme.WorkforceEssentials" parent="Base.Theme.WorkforceEssentials" />

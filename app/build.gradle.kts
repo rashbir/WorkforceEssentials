@@ -13,8 +13,8 @@ android {
         applicationId = "com.rash.workforceessentials"
         minSdk = 24
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.2.081023.1310"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -51,7 +51,7 @@ dependencies {
     implementation("com.google.firebase:firebase-database:20.2.2")
     implementation("com.google.firebase:firebase-crashlytics:18.4.3")
     implementation("com.google.firebase:firebase-perf:20.4.1")
-    implementation("com.google.android.gms:play-services-ads:22.4.0")
+//    implementation("com.google.android.gms:play-services-ads:22.4.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

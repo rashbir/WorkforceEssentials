@@ -1,12 +1,16 @@
 package com.rash.workforceessentials.access;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.androidnetworking.AndroidNetworking;
@@ -35,7 +39,25 @@ public class login extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
         initializeViews();
+        initializePreLoadings();
+        initializeListener();
 
+          }
+
+
+
+    private void initializeViews() {
+        user_id = findViewById(R.id.user_id);
+        password = findViewById(R.id.password);
+        login_button = findViewById(R.id.login_button);
+    }
+
+    private void initializePreLoadings() {
+//        Intent serviceIntent = new Intent(this, LocationService.class);
+//        startService(serviceIntent);
+    }
+
+    private void initializeListener() {
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,12 +119,6 @@ public class login extends AppCompatActivity {
                         });
             }
         });
-    }
-
-    private void initializeViews() {
-        user_id = findViewById(R.id.user_id);
-        password = findViewById(R.id.password);
-        login_button = findViewById(R.id.login_button);
     }
 
     @Override
