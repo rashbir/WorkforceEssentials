@@ -16,6 +16,8 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.rash.workforceessentials.R;
 import com.rash.workforceessentials.workspace.dashboard;
 
@@ -37,9 +39,7 @@ public class login extends AppCompatActivity {
         initializeViews();
         initializePreLoadings();
         initializeListener();
-
-          }
-
+    }
 
 
     private void initializeViews() {
@@ -49,8 +49,6 @@ public class login extends AppCompatActivity {
     }
 
     private void initializePreLoadings() {
-//        Intent serviceIntent = new Intent(this, LocationService.class);
-//        startService(serviceIntent);
     }
 
     private void initializeListener() {
@@ -60,7 +58,10 @@ public class login extends AppCompatActivity {
                 String access_user_id = String.valueOf(user_id.getText());
                 String access_password = String.valueOf(password.getText());
 
-                AndroidNetworking.post("https://tdsinfra.admiralerp.com/gateway/android/workforce_essentials/access.php?page=login_verify")
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("message");
+
+/*                AndroidNetworking.post("https://tdsinfra.admiralerp.com/gateway/android/workforce_essentials/access.php?page=login_verify")
                         .addBodyParameter("user_id", access_user_id)
                         .addBodyParameter("password", access_password)
                         .setPriority(Priority.IMMEDIATE)
@@ -112,7 +113,7 @@ public class login extends AppCompatActivity {
                             public void onError(ANError anError) {
                                 Toast.makeText(activity, "Error: " + anError.getErrorBody(), Toast.LENGTH_SHORT).show();
                             }
-                        });
+                        });*/
             }
         });
     }
